@@ -112,19 +112,19 @@ var SPChart = {
 		 .attr('fill', opt.scaleTextColor)
 		 .attr('font-size', opt.toolTipFontSize);
 		
-		//text s
+		//text P
 		var tipS = g.append('text').attr('class', 'sp-toolTip-s');
 		self.tipS = tipS;
-		tipS.text("S : ")
+		tipS.text("P : ")
 		 .attr('x', opt.toolTipDefPoint.x + opt.toolTipTextOffsetX + opt.toolTipTextOffsetSX)
 		 .attr('y', opt.toolTipDefPoint.y + opt.toolTipTextOffsetY + opt.toolTipTextOffsetSY)
 		 .attr('fill', opt.scaleTextColor)
 		 .attr('font-size', opt.toolTipFontSize);
 		
-		//text p
+		//text S
 		var tipP = g.append('text').attr('class', 'sp-toolTip-title-p');
 		self.tipP = tipP;
-		tipP.text("P : ")
+		tipP.text("S : ")
 		 .attr('x', opt.toolTipDefPoint.x + opt.toolTipTextOffsetX + opt.toolTipTextOffsetPX)
 		 .attr('y', opt.toolTipDefPoint.y + opt.toolTipTextOffsetY + opt.toolTipTextOffsetSY + opt.toolTipTextOffsetPY + opt.toolTipTextGap)
 		 .attr('fill', opt.scaleTextColor)
@@ -186,7 +186,7 @@ var SPChart = {
 		self.toolTip.attr('opacity', self.options.toolTipOpacity);
 		self = null;
 	},
-	//畫標記點 p是水平 s是垂直
+	//畫標記點
 	renderMark : function(svg, parameter, opt, self){
 		var g = svg.append('g').attr('class', 'sp-markGroup');
 		var d = svg.datum();
@@ -198,19 +198,21 @@ var SPChart = {
 		//水平軸所需數據
 		var basicThree = parameter.spWidth / (opt.scaleX[2] - opt.scaleX[0]);
 		for(var i=0,c=d.length ; i < c ; i++){
-			var s = d[i].s * 100;
-			var p = d[i].p;
+			var p = d[i].p * 100; //垂直
+			var s = d[i].s;		  //水平
 			var point = {x:0, y :0};
+			
 			//y軸
-			if(s >= opt.scaleY[1]){
-				var length = (s - opt.scaleY[1])  * basicOne;
+			
+			if(p >= opt.scaleY[1]){
+				var length = (p - opt.scaleY[1])  * basicOne;
 				point.y = bottomY - parameter.cileSize.h - length;
 			}else{
-				var length = s * basicTwo;
+				var length = p * basicTwo;
 				point.y = bottomY - length;
 			}
 			//x軸
-			point.x = leftX + (p *basicThree);
+			point.x = leftX + (s *basicThree);
 			
 			g.append('circle')
 			 .datum(d[i])
@@ -223,6 +225,7 @@ var SPChart = {
 			 .attr('stroke-width', opt.markStrokeWidth)
 			 .on('mouseover', self.markMouseOver)
 			 .on('mouseout' , self.markMouseOut);
+			 
 		}
 	},
 	//畫刻度
