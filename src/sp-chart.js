@@ -87,6 +87,12 @@ var SPChart = {
 	tipTitle : null,
 	tipS:null,
 	tipP:null,
+	isFloat : function(n){
+		return n % 1 !== 0;	
+	},
+	formatStr : function(val){
+		return (val * 100 | 0) / 100;
+	},
 	renderToolTip : function(svg, parameter, opt, self){
 		//panel
 		var g = svg.append('g').attr('class', 'sp-toolTip-group').attr('opacity', opt.toolTipOpacity);
@@ -101,7 +107,8 @@ var SPChart = {
 			   		.attr('stroke', opt.toolTipStork)
 			   		.attr('stroke-width', opt.toolTipStrokeWidth)
 			   		.attr('rx', opt.toolTipRadius.rx)
-			   		.attr('ry', opt.toolTipRadius.ry);
+			   		.attr('ry', opt.toolTipRadius.ry)
+			   		.attr('pointer-events', 'none');
 		
 		//text title
 		var title = g.append('text').attr('class', 'sp-toolTip-title');
@@ -110,25 +117,28 @@ var SPChart = {
 		 .attr('x', opt.toolTipDefPoint.x + opt.toolTipTextOffsetX)
 		 .attr('y', opt.toolTipDefPoint.y + opt.toolTipTextOffsetY)
 		 .attr('fill', opt.scaleTextColor)
-		 .attr('font-size', opt.toolTipFontSize);
+		 .attr('font-size', opt.toolTipFontSize)
+		 .attr('pointer-events', 'none');
 		
 		//text P
 		var tipS = g.append('text').attr('class', 'sp-toolTip-s');
 		self.tipS = tipS;
-		tipS.text("P : ")
+		tipS.text(" : ")
 		 .attr('x', opt.toolTipDefPoint.x + opt.toolTipTextOffsetX + opt.toolTipTextOffsetSX)
 		 .attr('y', opt.toolTipDefPoint.y + opt.toolTipTextOffsetY + opt.toolTipTextOffsetSY)
 		 .attr('fill', opt.scaleTextColor)
-		 .attr('font-size', opt.toolTipFontSize);
+		 .attr('font-size', opt.toolTipFontSize)
+		 .attr('pointer-events', 'none');
 		
 		//text S
 		var tipP = g.append('text').attr('class', 'sp-toolTip-title-p');
 		self.tipP = tipP;
-		tipP.text("S : ")
+		tipP.text(" : ")
 		 .attr('x', opt.toolTipDefPoint.x + opt.toolTipTextOffsetX + opt.toolTipTextOffsetPX)
 		 .attr('y', opt.toolTipDefPoint.y + opt.toolTipTextOffsetY + opt.toolTipTextOffsetSY + opt.toolTipTextOffsetPY + opt.toolTipTextGap)
 		 .attr('fill', opt.scaleTextColor)
-		 .attr('font-size', opt.toolTipFontSize);
+		 .attr('font-size', opt.toolTipFontSize)
+		 .attr('pointer-events', 'none');
 	},
 	markMouseOver : function(e){
 		var self = SPChart;
@@ -167,13 +177,20 @@ var SPChart = {
 			.attr('x', cx + opt.toolTipTextOffsetX )
 			.attr('y', cy + opt.toolTipTextOffsetY );
 		
-		//s
-		self.tipS.text('S : ' + (d.s * 100) + ' %')
+		var valueS = Number(d.s);
+		if(self.isFloat( valueS))
+			valueS = self.formatStr(valueS);
+		//
+		self.tipS.text('學生注意係數 : ' + valueS)
 			.attr('x', cx + opt.toolTipTextOffsetX + opt.toolTipTextOffsetSX)
 			.attr('y', cy + opt.toolTipTextOffsetY + opt.toolTipTextOffsetSY);
 		
-		//p
-		self.tipP.text('P : ' + d.p)
+		//如果是浮點數，就只取兩位
+		var valueP = Number(d.p) * 100;
+		if(self.isFloat( valueP))
+			valueP = self.formatStr(valueP);
+		//
+		self.tipP.text('得分百分比 : ' + valueP + '%')
 			.attr('x', cx + opt.toolTipTextOffsetX + opt.toolTipTextOffsetPX)
 			.attr('y', cy + opt.toolTipTextOffsetY + opt.toolTipTextOffsetSY + opt.toolTipTextOffsetPY + opt.toolTipTextGap);
 		
@@ -307,7 +324,8 @@ var SPChart = {
 				 .attr('x', point.x)
 				 .attr('y', point.y)
 				 .attr('fill', opt.generTextColor)
-				 .attr('font-size', opt.generFontSize);
+				 .attr('font-size', opt.generFontSize)
+				 .attr('pointer-events', 'none');
 			}
 		}
 	},
