@@ -371,7 +371,9 @@ var SPChart = {
 		svg.call(self.renderBackground, parameter, opt, self);
 		svg.call(self.renderGenreText, parameter, opt, self);
 		svg.call(self.renderGrid, parameter, opt, self);
-		svg.call(self.renderMark, parameter, opt, self);
+		if(svg.datum() && svg.datum().length > 0){
+			svg.call(self.renderMark, parameter, opt, self);
+		}
 		svg.call(self.renderScale, parameter, opt, self);
 		svg.call(self.renderToolTip, parameter, opt, self);
 	},
