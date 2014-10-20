@@ -266,8 +266,13 @@ var SPChart = {
 		for(var j = 0, column = opt.scaleX.length ; j < column ; j++){
 				var columnY = topY + parameter.spHeight + opt.scaleOffsetPY;
 				var columnX = (leftX + parameter.cileSize.w * j) + opt.scaleOffsetPX;
+				var textValue = opt.scaleX[j];
+				if(textValue == 0)
+					textValue = '0.' + textValue;
+				if(textValue == 1)
+					textValue = textValue + '.0';
 				g.append('g').append('text')
-			 	 .text(opt.scaleX[j])
+			 	 .text(textValue)
 			 	 .attr('x', columnX)
 			 	 .attr('y', columnY)
 			 	 .attr('fill', opt.scaleTextColor)
