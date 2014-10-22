@@ -53,7 +53,7 @@ var SPChart = {
 		toolTipOpacity : 0,			//toolTip 只有  mouseOver才會顯示
 		toolTipShowOpacity : 0.9,
 		toolTipDefPoint : {x:0, y:0},
-		toolTipW : 200,
+		toolTipW : 250,
 		toolTipH : 70,
 		toolTipBgColor : "white",
 		toolTipStork: "#bdbdbd",	//邊框
@@ -67,7 +67,9 @@ var SPChart = {
 		toolTipTextOffsetSX : 14,
 		toolTipTextOffsetSY : 18,
 		toolTipTextOffsetPX : 14,
-		toolTipTextOffsetPY : 18
+		toolTipTextOffsetPY : 18,
+		pTitle : "學生的得分百分比 ：",
+		sTitle : "學生注意係數 ："
 	},
 	mixOptions : function(options){
 		var opt = Object.create(this.options);
@@ -181,7 +183,7 @@ var SPChart = {
 		if(self.isFloat( valueS))
 			valueS = self.formatStr(valueS);
 		//
-		self.tipS.text('學生注意係數 : ' + valueS)
+		self.tipS.text( opt.sTitle + valueS)
 			.attr('x', cx + opt.toolTipTextOffsetX + opt.toolTipTextOffsetSX)
 			.attr('y', cy + opt.toolTipTextOffsetY + opt.toolTipTextOffsetSY);
 		
@@ -190,7 +192,7 @@ var SPChart = {
 		if(self.isFloat( valueP))
 			valueP = self.formatStr(valueP);
 		//
-		self.tipP.text('得分百分比 : ' + valueP + '%')
+		self.tipP.text(opt.pTitle + valueP + '%')
 			.attr('x', cx + opt.toolTipTextOffsetX + opt.toolTipTextOffsetPX)
 			.attr('y', cy + opt.toolTipTextOffsetY + opt.toolTipTextOffsetSY + opt.toolTipTextOffsetPY + opt.toolTipTextGap);
 		
